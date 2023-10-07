@@ -34,7 +34,7 @@ function Home() {
               <h1 class="jumbotron-heading mb-3 mt-3">Iniciativa Bebedores</h1>
               <img
                 class="img-thumbnail mb-3"
-                src="./pegueiAReferencia.jpg"
+                src="pegueiAReferencia.jpg"
                 alt="capitao america"
               />
               <p class="lead text-muted">
@@ -77,7 +77,7 @@ function Home() {
               <h1 class="jumbotron-heading mb-3 mt-3">Conto com Você!</h1>
               <img
                 class="rounded float-right w-25 p-3 h-25 d-inline-block"
-                src="./contoComVoce.jpg"
+                src="contoComVoce.jpg"
                 alt="JHO"
               />
             </div>
