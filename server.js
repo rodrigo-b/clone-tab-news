@@ -6,7 +6,7 @@ const path = require("path");
 
 dotenv.config();
 
-const dev = process.env.NODE_ENV !== "production";
+const dev = process.env.NODE_ENV;
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
