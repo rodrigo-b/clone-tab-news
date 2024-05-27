@@ -2,6 +2,7 @@ const { createServer } = require("http");
 const next = require("next");
 const dotenv = require("dotenv");
 const fs = require("fs");
+const path = require("path");
 
 dotenv.config();
 
@@ -13,7 +14,9 @@ const port = process.env.PORT || 3000;
 
 app.prepare().then(() => {
   const server = createServer((req, res) => {
-    if (req.url === "/events") {
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+
+    if (parsedUrl.pathname === "/events") {
       res.writeHead(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
@@ -29,7 +32,10 @@ app.prepare().then(() => {
         clearInterval(intervalId);
         res.end();
       });
-    } else if (req.url === "/update-text" && req.method === "POST") {
+    } else if (parsedUrl.pathname.startsWith("/_next")) {
+      // Servir arquivos estáticos do Next.js
+      handle(req, res);
+    } else if (parsedUrl.pathname === "/update-text" && req.method === "POST") {
       let body = "";
       req.on("data", (chunk) => {
         body += chunk.toString();
@@ -40,6 +46,7 @@ app.prepare().then(() => {
         res.end();
       });
     } else {
+      // Servir páginas do Next.js
       handle(req, res);
     }
   });
