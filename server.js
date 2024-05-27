@@ -1,7 +1,7 @@
-const { createServer } = require("https");
+const { createServer } = require("http");
 const next = require("next");
-const { Server } = require("socket.io");
 const dotenv = require("dotenv");
+const fs = require("fs");
 
 // Carregar variáveis de ambiente de um arquivo .env, se disponível
 dotenv.config();
@@ -14,25 +14,28 @@ const port = process.env.PORT || 3000;
 
 app.prepare().then(() => {
   const server = createServer((req, res) => {
-    handle(req, res);
-  });
+    if (req.url === "/events") {
+      // Configurar cabeçalhos para SSE
+      res.writeHead(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+      });
 
-  const io = new Server(server, {
-    cors: {
-      origin: "*",
-    },
-  });
+      // Configurar um intervalo para enviar atualizações periódicas (opcional)
+      const intervalId = setInterval(() => {
+        const text = fs.readFileSync("data.txt", "utf8");
+        res.write(`data: ${text}\n\n`);
+      }, 1000);
 
-  io.on("connection", (socket) => {
-    console.log("a user connected");
-
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
-    });
-
-    socket.on("textChange", (data) => {
-      socket.broadcast.emit("textChange", data);
-    });
+      // Lidar com fechamento da conexão
+      req.on("close", () => {
+        clearInterval(intervalId);
+        res.end();
+      });
+    } else {
+      handle(req, res);
+    }
   });
 
   server.listen(port, (err) => {
