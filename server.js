@@ -35,16 +35,21 @@ app.prepare().then(() => {
     } else if (parsedUrl.pathname.startsWith("/_next")) {
       // Servir arquivos estáticos do Next.js
       handle(req, res);
-    } else if (parsedUrl.pathname === "/update-text" && req.method === "POST") {
-      let body = "";
-      req.on("data", (chunk) => {
-        body += chunk.toString();
-      });
-      req.on("end", () => {
-        const { text } = JSON.parse(body);
-        fs.writeFileSync("data.txt", text);
+    } else if (parsedUrl.pathname === "/update-text") {
+      if (req.method === "POST") {
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+        req.on("end", () => {
+          const { text } = JSON.parse(body);
+          fs.writeFileSync("data.txt", text);
+          res.end();
+        });
+      } else {
+        res.writeHead(405, { Allow: "POST" });
         res.end();
-      });
+      }
     } else {
       // Servir páginas do Next.js
       handle(req, res);
