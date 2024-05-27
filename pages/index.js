@@ -8,7 +8,7 @@ const Home = () => {
       setText(event.data);
     };
 
-    const eventSource = new EventSource("/events");
+    const eventSource = new EventSource("/api/events");
     eventSource.addEventListener("message", handleSSE);
 
     return () => {
@@ -21,7 +21,7 @@ const Home = () => {
   };
 
   const handleSave = () => {
-    fetch("/update-text", {
+    fetch("/api/update-text", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
