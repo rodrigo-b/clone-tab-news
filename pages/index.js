@@ -4,25 +4,37 @@ const Home = () => {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    // Função para lidar com eventos SSE
     const handleSSE = (event) => {
       setText(event.data);
     };
 
-    // Criar uma nova instância de EventSource para se conectar ao servidor SSE
     const eventSource = new EventSource("/events");
-    // Adicionar ouvinte para o evento "message"
     eventSource.addEventListener("message", handleSSE);
 
     return () => {
-      // Fechar a conexão quando o componente é desmontado
       eventSource.close();
     };
   }, []);
 
+  const handleChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleSave = () => {
+    fetch("/update-text", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text }),
+    });
+  };
+
   return (
     <div>
-      <textarea rows="10" cols="30" value={text} />
+      <textarea rows="10" cols="30" value={text} onChange={handleChange} />
+      <br />
+      <button onClick={handleSave}>Salvar</button>
     </div>
   );
 };
