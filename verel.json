@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "src": "/events",
+      "dest": "./server.js"
+    },
+    {
+      "src": "/update-text",
+      "dest": "./server.js"
+    }
+  ]
+}
