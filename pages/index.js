@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div>
-      <textarea rows="10" cols="30" value={text} readOnly />
+      <textarea rows="10" cols="30" value={text} />
     </div>
   );
 };
