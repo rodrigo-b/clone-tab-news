@@ -3,7 +3,7 @@
     {
       "source": "/socket.io",
       "destination": "https://underthehood.com.br/socket.io",
-      "protocol": "ws"
+      "protocol": "https"
     }
   ]
 }
