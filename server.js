@@ -17,21 +17,26 @@ app.prepare().then(() => {
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
 
     if (parsedUrl.pathname === "/events") {
-      res.writeHead(200, {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      });
+      if (req.method === "GET") {
+        res.writeHead(200, {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+        });
 
-      const intervalId = setInterval(() => {
-        const text = fs.readFileSync("data.txt", "utf8");
-        res.write(`data: ${text}\n\n`);
-      }, 1000);
+        const intervalId = setInterval(() => {
+          const text = fs.readFileSync("data.txt", "utf8");
+          res.write(`data: ${text}\n\n`);
+        }, 1000);
 
-      req.on("close", () => {
-        clearInterval(intervalId);
+        req.on("close", () => {
+          clearInterval(intervalId);
+          res.end();
+        });
+      } else {
+        res.writeHead(405, { Allow: "GET" });
         res.end();
-      });
+      }
     } else if (parsedUrl.pathname.startsWith("/_next")) {
       // Servir arquivos estáticos do Next.js
       handle(req, res);
