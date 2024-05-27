@@ -1,11 +1,11 @@
 {
   "routes": [
     {
-      "src": "/events",
+      "src": "/api/events",
       "dest": "./server.js"
     },
     {
-      "src": "/update-text",
+      "src": "/api/update-text",
       "dest": "./server.js"
     }
   ]

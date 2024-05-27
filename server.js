@@ -16,7 +16,7 @@ app.prepare().then(() => {
   const server = createServer((req, res) => {
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
 
-    if (parsedUrl.pathname === "/events") {
+    if (parsedUrl.pathname === "/api/events") {
       if (req.method === "GET") {
         res.writeHead(200, {
           "Content-Type": "text/event-stream",
@@ -40,7 +40,7 @@ app.prepare().then(() => {
     } else if (parsedUrl.pathname.startsWith("/_next")) {
       // Servir arquivos estáticos do Next.js
       handle(req, res);
-    } else if (parsedUrl.pathname === "/update-text") {
+    } else if (parsedUrl.pathname === "/api/update-text") {
       if (req.method === "POST") {
         let body = "";
         req.on("data", (chunk) => {
