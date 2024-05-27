@@ -2,8 +2,7 @@
   "rewrites": [
     {
       "source": "/socket.io",
-      "destination": "https://underthehood.com.br/socket.io",
-      "protocol": "https"
+      "destination": "https://underthehood.com.br/socket.io"
     }
   ]
 }
