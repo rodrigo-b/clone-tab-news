@@ -14,7 +14,7 @@
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "next lint",
     "test": "npm run services:up && concurrently --names next,jest --hide next -k --success command-jest \"next dev\" \"jest --runInBand --verbose\"",
-    "test:watch": "jest --watchAll --runInBand",
+    "test:watch": "jest --watchAll --runInBand --verbose",
     "migration:create": "node-pg-migrate -m infra/migrations create",
     "migration:up": "node-pg-migrate -m infra/migrations --envPath .env.development up",
     "prepare": "husky",
