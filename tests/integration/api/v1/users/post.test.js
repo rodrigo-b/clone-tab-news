@@ -73,7 +73,45 @@ describe("POST /api/v1/users", () => {
       expect(responseBody).toEqual({
         name: "ValidationError",
         message: "The provided email is being used ",
-        action: "Use another email to complete the form",
+        action: "adjust the sent data and try again.",
+        status_code: 400,
+      });
+    });
+
+    test("With duplicated 'user'", async () => {
+      const response1 = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "KratosUSer",
+          email: "kratosUser1@gmail.com",
+          password: "Atreus",
+        }),
+      });
+
+      expect(response1.status).toBe(201);
+
+      const response2 = await fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "KratosUSer",
+          email: "KRatosUser2@gmail.com",
+          password: "Atreus",
+        }),
+      });
+
+      expect(response2.status).toBe(400);
+
+      const responseBody = await response2.json();
+      expect(responseBody).toEqual({
+        name: "ValidationError",
+        message: "The provided username is being used",
+        action: "adjust the sent data and try again.",
         status_code: 400,
       });
     });

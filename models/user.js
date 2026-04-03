@@ -3,6 +3,8 @@ import { ValidationError } from "infra/errors";
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
+  await validateUniqueUsername(userInputValues.username);
+
   const newUser = await runInsertQuery(userInputValues);
   return newUser;
 
@@ -22,6 +24,26 @@ async function create(userInputValues) {
       throw new ValidationError({
         message: "The provided email is being used ",
         action: "Use another email to complete the form",
+      });
+    }
+  }
+
+  async function validateUniqueUsername(username) {
+    const result = await database.query({
+      text: `SELECT 
+              email
+            FROM 
+              users 
+            WHERE 
+              LOWER(username) = LOWER($1)            
+            ;`,
+      values: [username],
+    });
+
+    if (result.rowCount > 0) {
+      throw new ValidationError({
+        message: "The provided username is being used",
+        action: "adjust the data and try again.",
       });
     }
   }
