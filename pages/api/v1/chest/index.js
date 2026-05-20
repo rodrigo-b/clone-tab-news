@@ -179,10 +179,6 @@ export default async function handler(req, res) {
     <div class="gallery">
       <div class="photo-card">
         <img src="/mrod.png" alt="Foto da comemoração" />
-
-        <div class="ribbon">
-          🍺 Parabeeens Lucilaaa 🍺
-        </div>
       </div>
     </div>
 
