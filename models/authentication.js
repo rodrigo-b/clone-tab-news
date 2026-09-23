@@ -1,7 +1,6 @@
 import user from "models/user.js";
 import password from "models/password.js";
-import { UnauthorizedError } from "infra/errors.js";
-import { NotFoundError } from "rxjs";
+import { UnauthorizedError, NotFoundError } from "infra/errors.js";
 
 async function getAuthenticatedUser(providedEmail, providedPassword) {
   try {
@@ -31,6 +30,8 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
           action: "Verifique se este dado está correto.",
         });
       }
+      console.log("ERRRRORRRR");
+      console.log(error instanceof NotFoundError);
       throw error;
     }
 
