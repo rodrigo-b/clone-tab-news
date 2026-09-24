@@ -90,5 +90,30 @@ describe("POST /api/v1/sessions", () => {
         status_code: 401,
       });
     });
+
+    test("With correct `email` and correct `password`", async () => {
+      const createdUser = await orchestrator.createUser({
+        email: "tudo.correto@curso.dev",
+        password: "tudocorreto",
+      });
+
+      const response = await fetch("http://localhost:3000/api/v1/sessions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          email: "tudo.correto@curso.dev",
+          password: "tudocorreto",
+        }),
+      });
+
+      expect(response.status).toBe(201);
+
+      const responseBody = await response.json();
+
+      console.log(responseBody);
+    });
   });
 });
