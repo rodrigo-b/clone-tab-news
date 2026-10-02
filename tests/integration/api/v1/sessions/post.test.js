@@ -1,5 +1,6 @@
 import orchestrator from "tests/orchestrator";
 import { version as uuidVersion } from "uuid";
+import setCookieParser from "set-cookie-parser";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
